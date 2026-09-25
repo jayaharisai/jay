@@ -5,11 +5,11 @@
   "scripts": {
     "check": "npm run lint && npm run format:check && npm test",
     "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
-    "lint:html": "html-validate index.html movies/index.html movies/collection.html books/index.html series/index.html stories/index.html search/index.html",
+    "lint:html": "html-validate index.html movies/index.html movies/collection.html books/index.html series/index.html stories/index.html search/index.html about/index.html",
     "lint:css": "stylelint style.css",
     "lint:js": "eslint script.js movies/*.mjs tests/*.mjs",
-    "format": "prettier --write index.html movies/*.html movies/*.mjs tests/*.mjs books/index.html series/index.html stories/index.html search/index.html style.css script.js package.json eslint.config.mjs .htmlvalidate.json .stylelintrc.json .github",
-    "format:check": "prettier --check index.html movies/*.html movies/*.mjs tests/*.mjs books/index.html series/index.html stories/index.html search/index.html style.css script.js package.json eslint.config.mjs .htmlvalidate.json .stylelintrc.json .github",
+    "format": "prettier --write index.html movies/*.html movies/*.mjs tests/*.mjs books/index.html series/index.html stories/index.html search/index.html about/index.html style.css script.js package.json eslint.config.mjs .htmlvalidate.json .stylelintrc.json .github",
+    "format:check": "prettier --check index.html movies/*.html movies/*.mjs tests/*.mjs books/index.html series/index.html stories/index.html search/index.html about/index.html style.css script.js package.json eslint.config.mjs .htmlvalidate.json .stylelintrc.json .github",
     "test": "node --test tests/*.test.mjs"
   },
   "devDependencies": {

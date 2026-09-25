@@ -934,6 +934,7 @@ body {
   --nav-padding-right: max(8px, env(safe-area-inset-right));
   --highlight-width: 56px;
   --highlight-height: 32px;
+  --nav-count: 5;
 
   position: fixed;
   z-index: 10;
@@ -941,7 +942,7 @@ body {
   bottom: 0;
   left: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--nav-count), minmax(0, 1fr));
   width: min(100%, var(--app-width));
   margin-inline: auto;
   padding: 6px var(--nav-padding-right) calc(6px + env(safe-area-inset-bottom))
@@ -961,7 +962,7 @@ body {
 
 .nav-highlight {
   display: block;
-  width: 20%;
+  width: calc(100% / var(--nav-count));
   height: 100%;
   transform: translateX(calc(var(--active-index, 0) * 100%));
   transition: transform 280ms var(--motion-ease);
@@ -1038,10 +1039,72 @@ body {
 }
 
 .nav-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: 0.625rem;
+  font-weight: 400;
   line-height: 14px;
   white-space: nowrap;
+}
+
+.nav-item[data-route="about"] .nav-label {
+  font-size: 0.5625rem;
+  letter-spacing: -0.02em;
+}
+
+.about-page {
+  display: grid;
+  gap: 22px;
+}
+
+.about-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 22px;
+  background:
+    radial-gradient(circle at top right, rgb(94 165 70 / 22%), transparent 42%),
+    linear-gradient(180deg, #1a1d1a, #131613);
+  border: 1px solid #293128;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 16%);
+}
+
+.about-card::after {
+  position: absolute;
+  inset: auto -44px -56px auto;
+  width: 148px;
+  height: 148px;
+  content: "";
+  background: radial-gradient(circle, rgb(94 165 70 / 24%), transparent 68%);
+  pointer-events: none;
+}
+
+.about-avatar {
+  display: inline-flex;
+  width: 82px;
+  height: 82px;
+  margin-bottom: 18px;
+  align-items: center;
+  justify-content: center;
+  background: #202520;
+  border-radius: 26px;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 22%);
+}
+
+.about-avatar img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+}
+
+.about-card h1 {
+  margin-bottom: 10px;
+}
+
+.about-copy {
+  margin: 0;
+  color: #bcc6b6;
+  font-size: 0.875rem;
+  line-height: 1.8;
 }
 
 @keyframes collection-card-in {

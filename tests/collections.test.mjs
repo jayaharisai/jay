@@ -391,6 +391,42 @@ test("initial page loads animate the main page while collection documents keep t
   assert.match(css, /@keyframes page-content-in/);
 });
 
+test("about route is included in navigation, quality checks and deployment", () => {
+  const source = readFileSync(
+    new globalThis.URL("../script.js", import.meta.url),
+    "utf8",
+  );
+  const packageJson = readFileSync(
+    new globalThis.URL("../package.json", import.meta.url),
+    "utf8",
+  );
+  const workflow = readFileSync(
+    new globalThis.URL(
+      "../.github/workflows/deploy-pages.yml",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  const aboutHtml = readFileSync(
+    new globalThis.URL("../about/index.html", import.meta.url),
+    "utf8",
+  );
+  assert.match(source, /route: "about"/);
+  assert.match(source, /label: "About Me"/);
+  assert.match(source, /<svg viewBox="0 0 24 24"/);
+  assert.match(source, /--nav-count/);
+  assert.match(packageJson, /about\/index\.html/);
+  assert.match(
+    workflow,
+    /cp -R movies books series stories search about _site\//,
+  );
+  assert.match(aboutHtml, /<body data-route="about">/);
+  assert.match(
+    aboutHtml,
+    /<h1 class="page-title" id="about-title">About Me<\/h1>/,
+  );
+});
+
 test("collection assets resolve inside the existing Pages deployment directories", () => {
   const pageUrl = new globalThis.URL(
     "../movies/collection.html",
@@ -408,7 +444,12 @@ test("collection assets resolve inside the existing Pages deployment directories
   assert.ok(
     source.indexOf('image.loading = "lazy"') < source.indexOf("image.src ="),
   );
-  for (const path of ["../script.js", "../style.css", "../movies/index.html"]) {
+  for (const path of [
+    "../script.js",
+    "../style.css",
+    "../movies/index.html",
+    "../about/index.html",
+  ]) {
     assert.doesNotMatch(
       readFileSync(new globalThis.URL(path, import.meta.url), "utf8"),
       /showModal|movie-collection-dialog|data-open-favourites/,

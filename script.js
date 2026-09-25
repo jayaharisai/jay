@@ -24,10 +24,16 @@ const tabs = [
     label: "Search",
     icon: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4.2 4.2"/>',
   },
+  {
+    route: "about",
+    label: "About Me",
+    icon: '<circle cx="12" cy="8.3" r="3.2"/><path d="M5.5 19.2c1.8-3.6 5-5.4 6.5-5.4s4.7 1.8 6.5 5.4"/>',
+  },
 ];
 
 const navigation = document.querySelector(".bottom-nav");
 const isCollectionPage = document.body.hasAttribute("data-movie-collection");
+navigation.style.setProperty("--nav-count", String(tabs.length));
 
 navigation.innerHTML = `<span class="nav-track" aria-hidden="true"><span class="nav-highlight"></span></span>${tabs
   .map(({ route, label, icon }) => {
