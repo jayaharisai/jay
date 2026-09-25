@@ -1,0 +1,154 @@
+:root {
+  font-family: "Poppins", sans-serif;
+  color: #172033;
+  background: #f5f7ff;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 24px);
+  background:
+    radial-gradient(circle at top left, #dfe7ff 0, transparent 38%),
+    radial-gradient(circle at bottom right, #f0ddff 0, transparent 38%),
+    #f8f9ff;
+}
+
+.card {
+  width: min(100%, 600px);
+  padding: clamp(48px, 9vw, 64px) clamp(22px, 6vw, 32px);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(72, 82, 130, 0.14);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 14px;
+  color: #5c48c8;
+  background: #eeeaff;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 20px 0 8px;
+  font-size: clamp(3rem, 12vw, 5.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+p {
+  margin: 0;
+  color: #687089;
+  font-size: clamp(1rem, 3vw, 1.15rem);
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 28px;
+}
+
+.loader span {
+  width: 7px;
+  height: 7px;
+  background: #765ee8;
+  border-radius: 50%;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes pulse {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .loader span { animation: none; }
+}
+
+@media (max-width: 480px) {
+  body {
+    background:
+      radial-gradient(circle at top left, #dfe7ff 0, transparent 52%),
+      radial-gradient(circle at bottom right, #f0ddff 0, transparent 52%),
+      #f8f9ff;
+  }
+
+  .card {
+    padding: 48px 20px;
+    border-radius: 20px;
+    box-shadow: 0 18px 50px rgba(72, 82, 130, 0.14);
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+
+  h1 {
+    margin-top: 18px;
+    font-size: clamp(2.8rem, 16vw, 4.25rem);
+  }
+
+  p {
+    max-width: 260px;
+    margin-inline: auto;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .loader {
+    margin-top: 24px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding-block: 12px;
+  }
+
+  .card {
+    padding-block: 24px;
+  }
+
+  h1 {
+    margin-top: 12px;
+    font-size: 3rem;
+  }
+
+  .loader {
+    margin-top: 16px;
+  }
+}
