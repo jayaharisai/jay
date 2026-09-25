@@ -45,6 +45,7 @@ let navigationVersion = 0;
 let enteringAnimation;
 let leavingAnimation;
 let leavingContent;
+let disposePageFeatures = () => {};
 
 function readPage(source) {
   const content = source.querySelector(".page-content");
@@ -77,6 +78,7 @@ function selectTab(route, committed = true) {
 
 pages.set(document.body.dataset.route, readPage(document));
 selectTab(document.body.dataset.route);
+disposePageFeatures = mountMovieHero(document.querySelector(".page-content"));
 
 function loadPage(link) {
   const route = link.dataset.route;
@@ -122,10 +124,12 @@ function showContent(page, direction) {
   const start = currentStyle
     ? { opacity: currentStyle.opacity, transform: currentStyle.transform }
     : null;
+  disposePageFeatures();
   stopContentMotion();
 
   if (!animate) {
     main.replaceChildren(next);
+    disposePageFeatures = mountMovieHero(next);
     return;
   }
 
@@ -133,6 +137,7 @@ function showContent(page, direction) {
   current.inert = true;
   leavingContent = current;
   main.append(next);
+  disposePageFeatures = mountMovieHero(next);
 
   leavingAnimation = current.animate(
     [
@@ -280,7 +285,179 @@ window.addEventListener("pagehide", () => {
   else window.clearTimeout(idlePreload);
   requests.forEach(({ controller }) => controller.abort());
   requests.clear();
+  disposePageFeatures();
   stopContentMotion();
   selectTab(document.body.dataset.route);
   document.querySelector(".app-canvas").removeAttribute("aria-busy");
 });
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    disposePageFeatures();
+    disposePageFeatures = mountMovieHero(
+      document.querySelector(".page-content:not([aria-hidden])"),
+    );
+  }
+});
+
+function mountMovieHero(content) {
+  const hero = content?.querySelector(".movie-hero");
+  if (!hero) return () => {};
+
+  const viewport = hero.querySelector(".movie-hero-viewport");
+  const slides = [...hero.querySelectorAll(".movie-slide")];
+  const status = hero.querySelector("[data-slide-status]");
+  const controller = new window.AbortController();
+  const listenerOptions = { signal: controller.signal };
+  let index = 0;
+  let rotationEnabled = !reducedMotion.matches;
+  let hovered = false;
+  let inView = true;
+  let rotationTimer;
+  let settleTimer;
+  let scrollFrame;
+  let announceOnSettle = false;
+
+  function updateSlides() {
+    slides.forEach((slide, position) => {
+      slide.setAttribute("aria-hidden", String(position !== index));
+    });
+  }
+
+  function scheduleRotation() {
+    window.clearTimeout(rotationTimer);
+    if (rotationEnabled && !hovered && inView && !document.hidden) {
+      rotationTimer = window.setTimeout(
+        () => goToSlide(index + 1, false),
+        6500,
+      );
+    }
+  }
+
+  function stopRotation() {
+    rotationEnabled = false;
+    window.clearTimeout(rotationTimer);
+  }
+
+  function goToSlide(nextIndex, manual = true) {
+    if (manual) stopRotation();
+    window.clearTimeout(rotationTimer);
+    announceOnSettle = manual;
+    const next = (nextIndex + slides.length) % slides.length;
+    viewport.scrollTo({
+      left: next * viewport.clientWidth,
+      behavior: reducedMotion.matches ? "auto" : "smooth",
+    });
+    if (next === index) scheduleRotation();
+  }
+
+  viewport.addEventListener(
+    "scroll",
+    () => {
+      window.clearTimeout(rotationTimer);
+      window.clearTimeout(settleTimer);
+      if (!scrollFrame) {
+        scrollFrame = window.requestAnimationFrame(() => {
+          scrollFrame = undefined;
+          index = Math.max(
+            0,
+            Math.min(
+              slides.length - 1,
+              Math.round(viewport.scrollLeft / viewport.clientWidth),
+            ),
+          );
+          updateSlides();
+        });
+      }
+      settleTimer = window.setTimeout(() => {
+        if (announceOnSettle) {
+          status.textContent = `${slides[index].querySelector("h2").textContent}, slide ${index + 1} of ${slides.length}.`;
+          announceOnSettle = false;
+        }
+        scheduleRotation();
+      }, 160);
+    },
+    { ...listenerOptions, passive: true },
+  );
+
+  viewport.addEventListener(
+    "pointerdown",
+    () => {
+      stopRotation();
+      announceOnSettle = true;
+    },
+    { ...listenerOptions, passive: true },
+  );
+
+  viewport.addEventListener(
+    "keydown",
+    (event) => {
+      const targets = {
+        ArrowLeft: index - 1,
+        ArrowRight: index + 1,
+        Home: 0,
+        End: slides.length - 1,
+      };
+      if (!(event.key in targets)) return;
+      event.preventDefault();
+      goToSlide(targets[event.key]);
+    },
+    listenerOptions,
+  );
+
+  hero.addEventListener("focusin", stopRotation, listenerOptions);
+  hero.addEventListener(
+    "pointerenter",
+    (event) => {
+      if (event.pointerType !== "mouse") return;
+      hovered = true;
+      scheduleRotation();
+    },
+    listenerOptions,
+  );
+  hero.addEventListener(
+    "pointerleave",
+    () => {
+      hovered = false;
+      scheduleRotation();
+    },
+    listenerOptions,
+  );
+  document.addEventListener(
+    "visibilitychange",
+    scheduleRotation,
+    listenerOptions,
+  );
+  reducedMotion.addEventListener(
+    "change",
+    () => {
+      if (reducedMotion.matches) stopRotation();
+    },
+    listenerOptions,
+  );
+
+  const resizeObserver = new window.ResizeObserver(() => {
+    viewport.scrollTo({ left: index * viewport.clientWidth, behavior: "auto" });
+  });
+  resizeObserver.observe(viewport);
+
+  const visibilityObserver = new window.IntersectionObserver(
+    ([entry]) => {
+      inView = entry.isIntersecting;
+      scheduleRotation();
+    },
+    { threshold: 0.25 },
+  );
+  visibilityObserver.observe(hero);
+
+  updateSlides();
+  scheduleRotation();
+  return () => {
+    controller.abort();
+    resizeObserver.disconnect();
+    visibilityObserver.disconnect();
+    window.clearTimeout(rotationTimer);
+    window.clearTimeout(settleTimer);
+    window.cancelAnimationFrame(scrollFrame);
+  };
+}

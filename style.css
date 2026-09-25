@@ -69,6 +69,123 @@ body {
   border: 0;
 }
 
+.movies-heading {
+  margin-bottom: 20px;
+}
+
+.movie-hero {
+  margin-inline: -20px;
+}
+
+.movie-hero-viewport {
+  display: flex;
+  height: 380px;
+  height: clamp(300px, 50svh, 430px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.movie-hero-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-slide {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  flex: 0 0 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: #171a18;
+}
+
+.movie-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.movie-slide-bommarillu .movie-poster {
+  object-position: 50% 28%;
+}
+
+.movie-slide-love-failure .movie-poster {
+  object-position: 24% 50%;
+}
+
+.movie-slide-ala-modalaindi .movie-poster {
+  object-position: 50% 55%;
+}
+
+.movie-slide-neerajanam .movie-poster {
+  object-position: 66% 50%;
+}
+
+.movie-slide::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    #101110 0%,
+    rgb(16 17 16 / 30%) 15%,
+    rgb(16 17 16 / 0%) 36%,
+    rgb(16 17 16 / 8%) 50%,
+    rgb(16 17 16 / 75%) 78%,
+    #101110 100%
+  );
+}
+
+.movie-slide-copy {
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  bottom: 18px;
+  left: 20px;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 35%);
+}
+
+.movie-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  color: #dbe6d7;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.movie-eyebrow::before {
+  width: 5px;
+  height: 5px;
+  content: "";
+  background: #a1d790;
+  border-radius: 50%;
+}
+
+.movie-slide-copy h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.75rem, 8vw, 2.125rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+}
+
+.movie-hero-viewport:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: -2px;
+}
+
 .bottom-nav {
   --nav-padding-left: max(8px, env(safe-area-inset-left));
   --nav-padding-right: max(8px, env(safe-area-inset-right));

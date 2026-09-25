@@ -20,7 +20,116 @@
   </head>
   <body data-route="movies">
     <main class="app-canvas">
-      <div class="page-content"><h1 class="page-title">Movies</h1></div>
+      <div class="page-content">
+        <h1 class="page-title movies-heading">Movies</h1>
+
+        <section
+          class="movie-hero"
+          aria-label="Featured movies"
+          aria-roledescription="carousel"
+        >
+          <div
+            class="movie-hero-viewport"
+            role="group"
+            aria-label="Movie posters. Swipe or use arrow keys to browse. Touch or focus to pause automatic slides."
+            tabindex="0"
+          >
+            <article
+              class="movie-slide movie-slide-bommarillu"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 of 4: Bommarillu"
+            >
+              <img
+                class="movie-poster"
+                src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                alt="Bommarillu poster"
+                width="424"
+                height="600"
+                fetchpriority="high"
+                decoding="async"
+                draggable="false"
+              />
+              <div class="movie-slide-copy">
+                <p class="movie-eyebrow">In the spotlight</p>
+                <h2>Bommarillu</h2>
+              </div>
+            </article>
+            <article
+              class="movie-slide movie-slide-love-failure"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 of 4: Love Failure"
+            >
+              <img
+                class="movie-poster"
+                src="../movies/posters/wp6908042.webp"
+                alt="Love Failure poster"
+                width="860"
+                height="405"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+              <div class="movie-slide-copy">
+                <p class="movie-eyebrow">In the spotlight</p>
+                <h2>Love Failure</h2>
+              </div>
+            </article>
+            <article
+              class="movie-slide movie-slide-ala-modalaindi"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 of 4: Ala Modalaindi"
+            >
+              <img
+                class="movie-poster"
+                src="../movies/posters/wp7374638.webp"
+                alt="Ala Modalaindi poster"
+                width="860"
+                height="1219"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+              <div class="movie-slide-copy">
+                <p class="movie-eyebrow">In the spotlight</p>
+                <h2>Ala Modalaindi</h2>
+              </div>
+            </article>
+            <article
+              class="movie-slide movie-slide-neerajanam"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="4 of 4: Neerajanam"
+            >
+              <img
+                class="movie-poster"
+                src="../movies/posters/wp6907956.webp"
+                alt="Neerajanam poster"
+                width="860"
+                height="430"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+              <div class="movie-slide-copy">
+                <p class="movie-eyebrow">In the spotlight</p>
+                <h2>Neerajanam</h2>
+              </div>
+            </article>
+          </div>
+
+          <p
+            class="visually-hidden"
+            aria-live="polite"
+            aria-atomic="true"
+            data-slide-status
+          >
+            Bommarillu, slide 1 of 4.
+          </p>
+        </section>
+      </div>
     </main>
     <nav class="bottom-nav" aria-label="Main navigation"></nav>
   </body>
