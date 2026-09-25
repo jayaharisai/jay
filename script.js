@@ -39,15 +39,19 @@ navigation.innerHTML = `<span class="nav-track" aria-hidden="true"><span class="
 
 const links = [...navigation.querySelectorAll("a.nav-item")];
 const pages = new Map();
-let pendingRequest;
+const requests = new Map();
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let navigationVersion = 0;
+let enteringAnimation;
+let leavingAnimation;
+let leavingContent;
 
 function readPage(source) {
-  const main = source.querySelector(".app-canvas");
-  if (!main) throw new Error("Page content is missing.");
+  const content = source.querySelector(".page-content");
+  if (!content) throw new Error("Page content is missing.");
 
   return {
-    main: main.cloneNode(true),
+    content: content.cloneNode(true),
     route: source.body.dataset.route,
     title: source.title,
     description:
@@ -55,7 +59,7 @@ function readPage(source) {
   };
 }
 
-function selectTab(route) {
+function selectTab(route, committed = true) {
   navigation.style.setProperty(
     "--active-index",
     tabs.findIndex((tab) => tab.route === route),
@@ -64,36 +68,113 @@ function selectTab(route) {
   links.forEach((link) => {
     const active = link.dataset.route === route;
     link.classList.toggle("is-active", active);
-    if (active) link.setAttribute("aria-current", "page");
-    else link.removeAttribute("aria-current");
+    if (committed) {
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    }
   });
 }
 
 pages.set(document.body.dataset.route, readPage(document));
 selectTab(document.body.dataset.route);
 
-async function navigate(link, updateHistory = true) {
-  pendingRequest?.abort();
+function loadPage(link) {
+  const route = link.dataset.route;
+  if (pages.has(route)) return Promise.resolve(pages.get(route));
+  if (requests.has(route)) return requests.get(route).promise;
+
   const controller = new window.AbortController();
-  pendingRequest = controller;
+  const promise = (async () => {
+    const response = await window.fetch(link.href, {
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error("Unable to load the page.");
+    const html = await response.text();
+    const source = new window.DOMParser().parseFromString(html, "text/html");
+    const page = readPage(source);
+    if (page.route !== route) throw new Error("Unexpected page.");
+    pages.set(route, page);
+    return page;
+  })().finally(() => {
+    if (requests.get(route)?.controller === controller) requests.delete(route);
+  });
+
+  requests.set(route, { promise, controller });
+  return promise;
+}
+
+function stopContentMotion() {
+  enteringAnimation?.cancel();
+  leavingAnimation?.cancel();
+  leavingContent?.remove();
+  enteringAnimation = undefined;
+  leavingAnimation = undefined;
+  leavingContent = undefined;
+}
+
+function showContent(page, direction) {
+  const main = document.querySelector(".app-canvas");
+  const current = main.querySelector(".page-content:not([aria-hidden])");
+  const next = page.content.cloneNode(true);
+  const animate = !reducedMotion.matches && typeof next.animate === "function";
+  // Preserve the current visual position if another tap interrupts a transition.
+  const currentStyle = animate ? window.getComputedStyle(current) : null;
+  const start = currentStyle
+    ? { opacity: currentStyle.opacity, transform: currentStyle.transform }
+    : null;
+  stopContentMotion();
+
+  if (!animate) {
+    main.replaceChildren(next);
+    return;
+  }
+
+  current.setAttribute("aria-hidden", "true");
+  current.inert = true;
+  leavingContent = current;
+  main.append(next);
+
+  leavingAnimation = current.animate(
+    [
+      start,
+      { opacity: 0, transform: `translate3d(${-6 * direction}px, 0, 0)` },
+    ],
+    { duration: 140, easing: "ease-out", fill: "forwards" },
+  );
+  leavingAnimation.finished
+    .then(() => {
+      current.remove();
+      if (leavingContent === current) leavingContent = undefined;
+    })
+    .catch(() => {});
+
+  enteringAnimation = next.animate(
+    [
+      { opacity: 0, transform: `translate3d(${8 * direction}px, 0, 0)` },
+      { opacity: 1, transform: "translate3d(0, 0, 0)" },
+    ],
+    { duration: 240, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+  );
+  enteringAnimation.finished.catch(() => {});
+}
+
+async function navigate(link, updateHistory = true) {
   const version = ++navigationVersion;
   const route = link.dataset.route;
+  const currentRoute = document.body.dataset.route;
+
+  // Move the indicator immediately, even on the first visit over a slow connection.
+  selectTab(route, false);
+  if (route === currentRoute) {
+    selectTab(route);
+    document.querySelector(".app-canvas").removeAttribute("aria-busy");
+    return;
+  }
+
   document.querySelector(".app-canvas").setAttribute("aria-busy", "true");
 
   try {
-    let page = pages.get(route);
-
-    if (!page) {
-      const response = await window.fetch(link.href, {
-        signal: controller.signal,
-      });
-      if (!response.ok) throw new Error("Unable to load the page.");
-      const html = await response.text();
-      const source = new window.DOMParser().parseFromString(html, "text/html");
-      page = readPage(source);
-      if (page.route !== route) throw new Error("Unexpected page.");
-      pages.set(route, page);
-    }
+    const page = await loadPage(link);
 
     // A slower response must never replace a newer tab selection.
     if (version !== navigationVersion) return;
@@ -102,9 +183,11 @@ async function navigate(link, updateHistory = true) {
       window.history.pushState(null, "", link.href);
     }
 
-    document
-      .querySelector(".app-canvas")
-      .replaceWith(page.main.cloneNode(true));
+    const direction = Math.sign(
+      tabs.findIndex((tab) => tab.route === route) -
+        tabs.findIndex((tab) => tab.route === currentRoute),
+    );
+    showContent(page, direction);
     document.body.dataset.route = route;
     document.title = page.title;
     document.querySelector('meta[name="description"]').content =
@@ -112,20 +195,22 @@ async function navigate(link, updateHistory = true) {
     selectTab(route);
     window.scrollTo(0, 0);
 
-    const heading = document.querySelector(".app-canvas h1");
+    const heading = document.querySelector(
+      ".page-content:not([aria-hidden]) h1",
+    );
     if (heading) {
       heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
     }
   } catch (error) {
     if (error.name === "AbortError" || version !== navigationVersion) return;
+    selectTab(document.body.dataset.route);
     // Keep the real page links usable if enhanced navigation fails.
     if (updateHistory) window.location.assign(link.href);
     else window.location.replace(link.href);
   } finally {
     if (version === navigationVersion) {
       document.querySelector(".app-canvas").removeAttribute("aria-busy");
-      pendingRequest = undefined;
     }
   }
 }
@@ -158,6 +243,44 @@ window.addEventListener("popstate", () => {
   else window.location.reload();
 });
 
+function prefetch(link) {
+  const connection = window.navigator.connection;
+  if (
+    !link ||
+    connection?.saveData ||
+    ["slow-2g", "2g"].includes(connection?.effectiveType)
+  )
+    return;
+
+  loadPage(link).catch(() => {});
+}
+
+// Share preloads with navigation so touching a tab never starts duplicate requests.
+["pointerover", "focusin"].forEach((eventName) => {
+  navigation.addEventListener(eventName, (event) => {
+    prefetch(event.target.closest("a.nav-item"));
+  });
+});
+
+function warmPages() {
+  if (!document.hidden) links.forEach(prefetch);
+}
+
+const idlePreload = window.requestIdleCallback
+  ? window.requestIdleCallback(warmPages, { timeout: 2000 })
+  : window.setTimeout(warmPages, 800);
+
+reducedMotion.addEventListener("change", () => {
+  if (reducedMotion.matches) stopContentMotion();
+});
+
 window.addEventListener("pagehide", () => {
-  pendingRequest?.abort();
+  navigationVersion += 1;
+  if (window.cancelIdleCallback) window.cancelIdleCallback(idlePreload);
+  else window.clearTimeout(idlePreload);
+  requests.forEach(({ controller }) => controller.abort());
+  requests.clear();
+  stopContentMotion();
+  selectTab(document.body.dataset.route);
+  document.querySelector(".app-canvas").removeAttribute("aria-busy");
 });
