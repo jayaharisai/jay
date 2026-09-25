@@ -7,21 +7,25 @@ const tabs = [
   {
     route: "books",
     label: "Books",
+    disabled: true,
     icon: '<path d="M12 20c-2-1.4-4.5-2-8-2V4c3.5 0 6 .6 8 2 2-1.4 4.5-2 8-2v14c-3.5 0-6 .6-8 2Z"/><path d="M12 6v14"/>',
   },
   {
     route: "series",
     label: "Series",
+    disabled: true,
     icon: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m10 9 5 3-5 3V9Z"/>',
   },
   {
     route: "stories",
     label: "Stories",
+    disabled: true,
     icon: '<path d="M4 20h16M5 16.5 16.8 4.7a2 2 0 0 1 2.8 2.8L7.8 19.3 4 20l.7-3.8Z"/><path d="m14.8 6.7 2.8 2.8"/>',
   },
   {
     route: "search",
     label: "Search",
+    disabled: true,
     icon: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4.2 4.2"/>',
   },
   {
@@ -36,11 +40,12 @@ const isCollectionPage = document.body.hasAttribute("data-movie-collection");
 navigation.style.setProperty("--nav-count", String(tabs.length));
 
 navigation.innerHTML = `<span class="nav-track" aria-hidden="true"><span class="nav-highlight"></span></span>${tabs
-  .map(({ route, label, icon }) => {
-    return `<a class="nav-item" data-route="${route}" href="../${route}/">
-      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
-      <span class="nav-label">${label}</span>
-    </a>`;
+  .map(({ route, label, icon, disabled }) => {
+    const content = `<span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
+      <span class="nav-label">${label}</span>`;
+    return disabled
+      ? `<button class="nav-item" data-route="${route}" type="button" disabled title="${label} — coming soon">${content}</button>`
+      : `<a class="nav-item" data-route="${route}" href="../${route}/">${content}</a>`;
   })
   .join("")}`;
 
@@ -69,6 +74,9 @@ function readPage(source) {
 }
 
 function selectTab(route, committed = true) {
+  navigation.querySelector(".nav-track").hidden = !tabs.some(
+    (tab) => tab.route === route && !tab.disabled,
+  );
   navigation.style.setProperty(
     "--active-index",
     tabs.findIndex((tab) => tab.route === route),
@@ -172,7 +180,7 @@ function showContent(page, direction) {
       { opacity: 0, transform: `translate3d(${8 * direction}px, 0, 0)` },
       { opacity: 1, transform: "translate3d(0, 0, 0)" },
     ],
-    { duration: 240, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+    { duration: 280, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
   );
   enteringAnimation.finished.catch(() => {});
 }

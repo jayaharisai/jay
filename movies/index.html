@@ -22,7 +22,31 @@
   <body data-route="movies">
     <main class="app-canvas">
       <div class="page-content">
-        <h1 class="page-title movies-heading">Movies</h1>
+        <header class="movies-heading">
+          <div>
+            <p class="page-eyebrow">Jay's Library</p>
+            <h1 class="page-title">Movies</h1>
+          </div>
+          <button
+            class="header-search"
+            type="button"
+            aria-label="Search — coming soon"
+            title="Search — coming soon"
+            disabled
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="10.8" cy="10.8" r="6.3" />
+              <path d="m16 16 4.2 4.2" />
+            </svg>
+          </button>
+        </header>
 
         <section
           class="movie-hero"
@@ -301,7 +325,7 @@
             My Favourite Movies
           </h2>
           <p class="movie-section-note">
-            A few sample picks to start your collection.
+            A selection of favourites. Sample collection.
           </p>
           <ul
             class="movie-row"
@@ -439,8 +463,7 @@
             Movies by language
           </h2>
           <p class="movie-section-note">
-            Sample titles and artwork. Add your own picks and matching posters
-            later.
+            Different languages. More stories to discover. Sample collection.
           </p>
           <section class="language-shelf" aria-labelledby="telugu-movies-title">
             <div class="movie-shelf-heading">
