@@ -1,0 +1,21 @@
+{
+  "name": "coming-soon-page",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "npm run lint && npm run format:check",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "lint:html": "html-validate index.html",
+    "lint:css": "stylelint style.css",
+    "lint:js": "eslint script.js",
+    "format": "prettier --write index.html style.css script.js package.json .htmlvalidate.json .stylelintrc.json .github",
+    "format:check": "prettier --check index.html style.css script.js package.json .htmlvalidate.json .stylelintrc.json .github"
+  },
+  "devDependencies": {
+    "eslint": "^10.0.0",
+    "html-validate": "^10.4.0",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.24.0",
+    "stylelint-config-standard": "^39.0.0"
+  }
+}
