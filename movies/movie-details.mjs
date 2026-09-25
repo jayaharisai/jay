@@ -1,4 +1,5 @@
 import { getMovieStory } from "./collection-data.mjs";
+import { mountPressPreview } from "./press-preview.mjs";
 
 // Native dialog supplies modal focus containment and makes the page behind it inert.
 export function createDrawerController(parts, env) {
@@ -322,6 +323,7 @@ export function readMovieDetails(trigger, env) {
 }
 
 export function mountMovieDetails(doc, env) {
+  const disposePreview = mountPressPreview(doc, env);
   const dialog = doc.createElement("dialog");
   dialog.className = "movie-drawer";
   dialog.setAttribute("aria-labelledby", "movie-drawer-title");
@@ -370,6 +372,7 @@ export function mountMovieDetails(doc, env) {
     { signal: controller.signal },
   );
   return () => {
+    disposePreview();
     controller.abort();
     drawer.destroy();
   };

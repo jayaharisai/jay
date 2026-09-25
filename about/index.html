@@ -22,21 +22,307 @@
   <body data-route="about">
     <main class="app-canvas">
       <div class="page-content about-page">
-        <section class="about-card" aria-labelledby="about-title">
-          <div class="about-avatar">
+        <header>
+          <p class="page-eyebrow">The person behind the picks</p>
+          <h1 class="page-title" id="about-title">About Me</h1>
+        </header>
+
+        <section class="profile" aria-labelledby="profile-name">
+          <div class="profile-cover">
             <img
-              src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><defs><linearGradient id="a" x1="14" x2="82" y1="10" y2="86" gradientUnits="userSpaceOnUse"><stop stop-color="%235ea546"/><stop offset="1" stop-color="%23253d1f"/></linearGradient></defs><rect width="96" height="96" rx="30" fill="%23181d18"/><circle cx="48" cy="38" r="18" fill="url(%23a)"/><path fill="%23dcedd4" d="M48 24c5.8 0 10.5 4.7 10.5 10.5S53.8 45 48 45s-10.5-4.7-10.5-10.5S42.2 24 48 24Z"/><path fill="url(%23a)" d="M19 75c3.7-13 15.7-22 29-22s25.3 9 29 22c-7.4 6.1-17.1 9.5-29 9.5S26.4 81.1 19 75Z"/><path fill="%23dcedd4" d="M48 57c10.8 0 19.6 6.4 23.8 16.2-6.2 4.7-14.2 7.2-23.8 7.2s-17.6-2.5-23.8-7.2C28.4 63.4 37.2 57 48 57Z"/></svg>'
-              alt="Profile avatar"
-              width="72"
-              height="72"
+              src="../movies/posters/wp6908042.webp"
+              alt="Love Failure movie artwork used as a sample cover"
+              width="860"
+              height="405"
+              fetchpriority="high"
               decoding="async"
             />
+            <span class="profile-cover-label">Life, one story at a time.</span>
           </div>
-          <h1 class="page-title" id="about-title">About Me</h1>
-          <p class="about-copy">
-            Welcome to Jay's Library — a personal space for movies, books,
-            series, and stories.
-          </p>
+          <div class="profile-intro">
+            <div class="profile-identity">
+              <img
+                class="profile-avatar"
+                src="../about/avatar.svg"
+                alt="Jay's placeholder avatar"
+                width="100"
+                height="100"
+              />
+              <span class="profile-preview-label">Sample profile</span>
+            </div>
+            <h2 id="profile-name">Jay</h2>
+            <p class="profile-handle">Welcome to my little corner.</p>
+            <p class="profile-bio">
+              A little cinema, a few good books, and stories worth keeping.
+              Collecting the things that make an ordinary day feel a little more
+              special.
+            </p>
+            <ul class="profile-interests">
+              <li>Movie lover</li>
+              <li>Reader</li>
+              <li>Storyteller</li>
+            </ul>
+            <a class="profile-collection-link" href="../movies/"
+              >Explore my movie collection <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </section>
+
+        <section
+          class="profile-feed"
+          aria-labelledby="profile-posts-title"
+          data-profile-feed
+        >
+          <div class="profile-feed-heading">
+            <h2 id="profile-posts-title">Posts</h2>
+            <span>Notes &amp; little favourites</span>
+          </div>
+          <div class="profile-post-list" id="profile-posts">
+            <article
+              class="profile-post"
+              data-profile-post
+              aria-labelledby="post-one-title"
+            >
+              <header class="profile-post-author">
+                <img
+                  src="../about/avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <div>
+                  <p>Jay</p>
+                  <span>Sample post · Movie journal</span>
+                </div>
+              </header>
+              <div class="profile-post-copy">
+                <h3 id="post-one-title">Some films feel like coming home.</h3>
+                <p>
+                  There is something about a familiar film. You know the next
+                  scene, remember the music, and still find yourself smiling at
+                  all the same little moments.
+                </p>
+                <details class="profile-post-details">
+                  <summary>
+                    <span class="post-read-more">Read more</span
+                    ><span class="post-read-less">Show less</span>
+                  </summary>
+                  <div class="profile-post-expanded">
+                    <p>
+                      Maybe a favourite is not always the biggest or the most
+                      surprising story. Sometimes it is simply the one you want
+                      to return to after a long day.
+                    </p>
+                    <p>
+                      This journal is a place for those films: the
+                      conversations, characters, and small details that stay
+                      with us long after the credits.
+                    </p>
+                  </div>
+                </details>
+              </div>
+              <div class="profile-post-media">
+                <img
+                  src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                  alt="Bommarillu — sample movie journal artwork"
+                  width="424"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p class="profile-post-caption">
+                From the movie shelf · Bommarillu
+              </p>
+            </article>
+
+            <article
+              class="profile-post"
+              data-profile-post
+              aria-labelledby="post-two-title"
+            >
+              <header class="profile-post-author">
+                <img
+                  src="../about/avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <div>
+                  <p>Jay</p>
+                  <span>Sample post · Photo collection</span>
+                </div>
+              </header>
+              <div class="profile-post-copy">
+                <h3 id="post-two-title">A few frames worth keeping.</h3>
+                <p>
+                  Different films, different moods. A small collection of
+                  colours, faces, and stories for a slow evening.
+                </p>
+                <details class="profile-post-details">
+                  <summary>
+                    <span class="post-read-more">Read more</span
+                    ><span class="post-read-less">Show less</span>
+                  </summary>
+                  <div class="profile-post-expanded">
+                    <p>
+                      A single frame can bring back an entire story. Put a few
+                      together and you have a little mood board: a bit of
+                      romance, a bit of laughter, and something that makes you
+                      pause.
+                    </p>
+                  </div>
+                </details>
+              </div>
+              <div class="profile-post-media profile-post-media-three">
+                <img
+                  src="../movies/posters/wp7374638.webp"
+                  alt="Ala Modalaindi poster"
+                  width="860"
+                  height="1219"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <img
+                  src="../movies/posters/wp6908042.webp"
+                  alt="Love Failure poster"
+                  width="860"
+                  height="405"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <img
+                  src="../movies/posters/wp6907956.webp"
+                  alt="Neerajanam poster"
+                  width="860"
+                  height="430"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p class="profile-post-caption">
+                Three films, a little inspiration.
+              </p>
+            </article>
+
+            <article
+              class="profile-post"
+              data-profile-post
+              aria-labelledby="post-three-title"
+            >
+              <header class="profile-post-author">
+                <img
+                  src="../about/avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <div>
+                  <p>Jay</p>
+                  <span>Sample post · A small thought</span>
+                </div>
+              </header>
+              <div class="profile-post-copy">
+                <h3 id="post-three-title">Making room for a good story.</h3>
+                <p>
+                  Not every free moment needs a plan. Sometimes a few pages, a
+                  quiet room, and a story you have never heard before are more
+                  than enough.
+                </p>
+                <details class="profile-post-details">
+                  <summary>
+                    <span class="post-read-more">Read more</span
+                    ><span class="post-read-less">Show less</span>
+                  </summary>
+                  <div class="profile-post-expanded">
+                    <p>
+                      That is the idea behind this space: somewhere to slow
+                      down, save a thought, and share a small discovery. A book,
+                      a film, or just a paragraph that asks you to see something
+                      differently.
+                    </p>
+                    <p>
+                      There is no need to finish everything at once. The good
+                      stories will still be here tomorrow.
+                    </p>
+                  </div>
+                </details>
+              </div>
+            </article>
+
+            <article
+              class="profile-post"
+              data-profile-post
+              aria-labelledby="post-four-title"
+            >
+              <header class="profile-post-author">
+                <img
+                  src="../about/avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <div>
+                  <p>Jay</p>
+                  <span>Sample post · Double feature</span>
+                </div>
+              </header>
+              <div class="profile-post-copy">
+                <h3 id="post-four-title">Two picks for a quiet weekend.</h3>
+                <p>
+                  A familiar favourite and something to rediscover. Sometimes
+                  choosing what to watch is half the fun.
+                </p>
+                <details class="profile-post-details">
+                  <summary>
+                    <span class="post-read-more">Read more</span
+                    ><span class="post-read-less">Show less</span>
+                  </summary>
+                  <div class="profile-post-expanded">
+                    <p>
+                      Pairing films does not need a rule. They might share a
+                      feeling, a song, or simply a place on your shelf. These
+                      sample picks are a little reminder to leave room for a
+                      movie night.
+                    </p>
+                  </div>
+                </details>
+              </div>
+              <div class="profile-post-media profile-post-media-two">
+                <img
+                  src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                  alt="Bommarillu poster"
+                  width="424"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <img
+                  src="../movies/posters/wp7374638.webp"
+                  alt="Ala Modalaindi poster"
+                  width="860"
+                  height="1219"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p class="profile-post-caption">A little weekend watchlist.</p>
+            </article>
+          </div>
+          <button
+            class="profile-load-more"
+            type="button"
+            aria-controls="profile-posts"
+            data-profile-load-more
+            hidden
+          >
+            Load more posts <span aria-hidden="true">↓</span>
+          </button>
+          <p class="profile-feed-status" role="status" data-profile-status></p>
         </section>
       </div>
     </main>

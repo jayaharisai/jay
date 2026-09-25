@@ -331,7 +331,54 @@ window.addEventListener("pageshow", (event) => {
 });
 
 function mountPageFeatures(content) {
-  return mountMovieHero(content);
+  const disposeHero = mountMovieHero(content);
+  const disposeProfile = mountProfileFeed(content);
+  return () => {
+    disposeHero();
+    disposeProfile();
+  };
+}
+
+function mountProfileFeed(content) {
+  const feed = content?.querySelector("[data-profile-feed]");
+  if (!feed) return () => {};
+  const posts = [...feed.querySelectorAll("[data-profile-post]")];
+  const button = feed.querySelector("[data-profile-load-more]");
+  const status = feed.querySelector("[data-profile-status]");
+  const controller = new window.AbortController();
+  let visible = Number(feed.dataset.profileVisible) || 2;
+
+  function update() {
+    feed.dataset.profileVisible = String(visible);
+    posts.forEach((post, index) => {
+      post.hidden = index >= visible;
+    });
+    button.hidden = visible >= posts.length;
+    status.textContent = button.hidden
+      ? "You're all caught up."
+      : `${visible} of ${posts.length} posts`;
+  }
+
+  update();
+  button.addEventListener(
+    "click",
+    () => {
+      const start = visible;
+      visible = Math.min(visible + 2, posts.length);
+      update();
+      posts.slice(start, visible).forEach((post) => {
+        if (!reducedMotion.matches) post.classList.add("profile-post-reveal");
+      });
+      // Keep keyboard focus at the first newly revealed post.
+      const heading = posts[start]?.querySelector("h3");
+      if (heading) {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }
+    },
+    { signal: controller.signal },
+  );
+  return () => controller.abort();
 }
 
 function mountInitialPageReveal(content) {

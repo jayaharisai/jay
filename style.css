@@ -460,6 +460,8 @@ body {
   border: 0;
   border-radius: var(--card-radius);
   cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -821,6 +823,65 @@ body {
   border: 0;
 }
 
+.movie-press-preview {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 200ms ease,
+    visibility 0s 200ms;
+}
+
+.movie-press-preview::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: rgb(0 0 0 / 48%);
+  /* stylelint-disable-next-line property-no-vendor-prefix -- Older iOS Safari needs this prefix. */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.movie-press-preview.is-visible {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+.movie-press-card {
+  position: absolute;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgb(0 0 0 / 45%);
+  transform: scale(0.94);
+  transition: transform var(--motion-standard) var(--motion-ease);
+}
+
+.movie-press-preview.is-visible .movie-press-card {
+  transform: scale(1);
+}
+
+.movie-press-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.movie-press-card p {
+  margin: 0;
+  padding: 14px 12px;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .movie-drawer[open] {
   display: flex;
   align-items: flex-end;
@@ -1103,46 +1164,333 @@ body {
 
 .about-page {
   display: grid;
-  gap: 22px;
+  gap: 28px;
 }
 
-.about-card {
-  position: relative;
+.profile {
   overflow: hidden;
-  padding: 28px 22px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+}
+
+.profile-cover {
+  position: relative;
+  height: clamp(156px, 45vw, 190px);
+  background: var(--surface);
+}
+
+.profile-cover > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 45% 40%;
+}
+
+.profile-cover::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 30%, rgb(0 0 0 / 70%));
+}
+
+.profile-cover-label {
+  position: absolute;
+  z-index: 1;
+  right: 16px;
+  bottom: 16px;
+  max-width: 52%;
+  color: #fff;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.profile-intro {
+  padding: 0 20px 22px;
+}
+
+.profile-identity {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -40px 0 14px;
+}
+
+.profile-avatar {
+  display: block;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  background: #283e27;
+  border: 5px solid #101110;
+  border-radius: 50%;
+}
+
+.profile-preview-label {
+  padding-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 0.625rem;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.profile-intro h2 {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.profile-handle {
+  margin: 5px 0 16px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.profile-bio {
+  margin: 0;
+  color: #d3d9d0;
+  font-size: 0.8125rem;
+  line-height: 1.85;
+}
+
+.profile-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-interests li {
+  padding: 6px 10px;
+  color: #c7d8be;
+  font-size: 0.625rem;
+  line-height: 1.5;
+  background: #1c261a;
+  border-radius: 6px;
+}
+
+.profile-collection-link {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  color: #b5df9f;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-decoration: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.profile-feed-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.profile-feed-heading h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.profile-feed-heading > span {
+  color: var(--text-muted);
+  font-size: 0.625rem;
+}
+
+.profile-post-list {
+  display: grid;
+  gap: 18px;
+}
+
+.profile-post {
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 16px;
 }
 
-.about-avatar {
-  display: inline-flex;
-  width: 82px;
-  height: 82px;
-  margin-bottom: 18px;
+.profile-post-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 16px 0;
+}
+
+.profile-post-author img {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.profile-post-author p {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.profile-post-author span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.625rem;
+  line-height: 1.5;
+}
+
+.profile-post-copy {
+  padding: 16px;
+  overflow-wrap: anywhere;
+}
+
+.profile-post-copy h3 {
+  margin: 0 0 10px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+}
+
+.profile-post-copy p {
+  margin: 0;
+  color: #c1c9bd;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.profile-post-details summary {
+  display: flex;
+  width: fit-content;
+  min-height: 44px;
+  align-items: center;
+  gap: 12px;
+  color: #b5df9f;
+  font-size: 0.75rem;
+  list-style: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.profile-post-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.profile-post-details summary::after {
+  content: "+";
+  font-size: 1rem;
+}
+
+.profile-post-details[open] summary::after {
+  content: "−";
+}
+
+.post-read-less,
+.profile-post-details[open] .post-read-more {
+  display: none;
+}
+
+.profile-post-details[open] .post-read-less {
+  display: inline;
+}
+
+.profile-post-expanded p + p {
+  margin-top: 12px;
+}
+
+.profile-post-details[open] .profile-post-expanded,
+.profile-post-reveal {
+  animation: page-content-in var(--motion-standard) var(--motion-ease) both;
+}
+
+.profile-post-media {
+  display: grid;
+  height: clamp(210px, 60vw, 250px);
+  gap: 3px;
+  overflow: hidden;
+  background: #101110;
+}
+
+.profile-post-media img {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.profile-post-media-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-post-media-three {
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.profile-post-media-three img:first-child {
+  grid-row: span 2;
+}
+
+.profile-post-caption {
+  margin: 0;
+  padding: 12px 16px;
+  color: var(--text-muted);
+  font-size: 0.625rem;
+  line-height: 1.6;
+}
+
+.profile-load-more {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
   align-items: center;
   justify-content: center;
-  background: #202520;
-  border-radius: 26px;
-  box-shadow: 0 12px 28px rgb(0 0 0 / 22%);
+  gap: 12px;
+  margin-top: 20px;
+  padding: 12px 16px;
+  color: #dbeed1;
+  font: inherit;
+  font-size: 0.8125rem;
+  background: #23331d;
+  border: 1px solid #405b35;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
-.about-avatar img {
-  display: block;
-  width: 72px;
-  height: 72px;
-  border-radius: 22px;
+.profile-load-more[hidden],
+.profile-post[hidden] {
+  display: none;
 }
 
-.about-card h1 {
-  margin-bottom: 10px;
+.profile-feed-status {
+  margin: 14px 0 0;
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  text-align: center;
 }
 
-.about-copy {
-  margin: 0;
-  color: #bcc6b6;
-  font-size: 0.875rem;
-  line-height: 1.8;
+.profile-collection-link:focus-visible,
+.profile-post-details summary:focus-visible,
+.profile-load-more:focus-visible,
+.profile-post-copy h3:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 @keyframes collection-card-in {
@@ -1192,6 +1540,20 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .profile-post-details[open] .profile-post-expanded,
+  .profile-post-reveal {
+    animation: none;
+  }
+
+  .movie-press-preview,
+  .movie-press-card {
+    transition: none;
+  }
+
+  .movie-press-card {
+    transform: none;
+  }
+
   .page-content[data-page-stage] > *,
   [data-collection-page] .collection-back,
   [data-collection-page] .collection-header,
