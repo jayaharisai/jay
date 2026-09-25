@@ -3,27 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A new website is coming soon." />
-    <title>Welcome | Coming Soon</title>
+    <meta name="description" content="Jay's personal library." />
+    <meta name="theme-color" content="#101310" />
+    <title>Jay's Library</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
-    <main class="card">
-      <span class="badge">Coming soon</span>
-      <h1>Welcome</h1>
-      <p>This page is currently under construction.</p>
-      <div class="loader" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <main class="app-canvas">
+      <h1 class="visually-hidden">Jay's Library</h1>
     </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <a class="nav-item is-active" href="#movies" aria-current="page">
+        <span class="nav-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4" />
+          </svg>
+        </span>
+        <span class="nav-label">Movies</span>
+      </a>
+
+      <a class="nav-item" href="#books">
+        <span class="nav-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 20c-2-1.4-4.5-2-8-2V4c3.5 0 6 .6 8 2 2-1.4 4.5-2 8-2v14c-3.5 0-6 .6-8 2Z"
+            />
+            <path d="M12 6v14" />
+          </svg>
+        </span>
+        <span class="nav-label">Books</span>
+      </a>
+
+      <a class="nav-item" href="#series">
+        <span class="nav-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="5" width="18" height="13" rx="2" />
+            <path d="M8 21h8M12 18v3M9 9l2 2 4-4" />
+          </svg>
+        </span>
+        <span class="nav-label">Series</span>
+      </a>
+
+      <a class="nav-item" href="#stories">
+        <span class="nav-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M4 20h16M5 16.5 16.8 4.7a2 2 0 0 1 2.8 2.8L7.8 19.3 4 20l.7-3.8Z"
+            />
+            <path d="m14.8 6.7 2.8 2.8" />
+          </svg>
+        </span>
+        <span class="nav-label">Stories</span>
+      </a>
+
+      <a class="nav-item" href="#search">
+        <span class="nav-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="10.8" cy="10.8" r="6.3" />
+            <path d="m16 16 4.2 4.2" />
+          </svg>
+        </span>
+        <span class="nav-label">Search</span>
+      </a>
+    </nav>
   </body>
 </html>
