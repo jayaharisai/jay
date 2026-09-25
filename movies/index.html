@@ -17,6 +17,7 @@
     />
     <link rel="stylesheet" href="../style.css" />
     <script src="../script.js" defer></script>
+    <script src="../movies/movie-details.mjs" type="module"></script>
   </head>
   <body data-route="movies">
     <main class="app-canvas">
@@ -54,6 +55,13 @@
                 <p class="movie-eyebrow">In the spotlight</p>
                 <h2>Bommarillu</h2>
               </div>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Bommarillu"
+              ></button>
             </article>
             <article
               class="movie-slide movie-slide-love-failure"
@@ -75,6 +83,13 @@
                 <p class="movie-eyebrow">In the spotlight</p>
                 <h2>Love Failure</h2>
               </div>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Love Failure"
+              ></button>
             </article>
             <article
               class="movie-slide movie-slide-ala-modalaindi"
@@ -96,6 +111,13 @@
                 <p class="movie-eyebrow">In the spotlight</p>
                 <h2>Ala Modalaindi</h2>
               </div>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Ala Modalaindi"
+              ></button>
             </article>
             <article
               class="movie-slide movie-slide-neerajanam"
@@ -117,6 +139,13 @@
                 <p class="movie-eyebrow">In the spotlight</p>
                 <h2>Neerajanam</h2>
               </div>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Neerajanam"
+              ></button>
             </article>
           </div>
 
@@ -128,6 +157,771 @@
           >
             Bommarillu, slide 1 of 4.
           </p>
+        </section>
+
+        <section
+          class="movie-languages"
+          aria-labelledby="movie-languages-title"
+        >
+          <h2 id="movie-languages-title">Explore by language</h2>
+          <ul
+            class="language-list"
+            aria-labelledby="movie-languages-title"
+            tabindex="0"
+          >
+            <!-- Sample artwork; replace with language-specific posters later. -->
+            <li class="language-card language-card-telugu">
+              <a
+                class="language-card-link"
+                href="../movies/collection.html?list=telugu"
+              >
+                <img
+                  class="language-artwork"
+                  src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                  alt=""
+                  width="424"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+                <div class="language-copy">
+                  <span class="language-detail">Telugu</span>
+                  <h3 class="language-name">Tollywood</h3>
+                </div>
+              </a>
+            </li>
+            <li class="language-card language-card-hindi">
+              <a
+                class="language-card-link"
+                href="../movies/collection.html?list=hindi"
+              >
+                <img
+                  class="language-artwork"
+                  src="../movies/posters/wp6908042.webp"
+                  alt=""
+                  width="860"
+                  height="405"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+                <div class="language-copy">
+                  <span class="language-detail">Hindi</span>
+                  <h3 class="language-name">Bollywood</h3>
+                </div>
+              </a>
+            </li>
+            <li class="language-card language-card-tamil">
+              <a
+                class="language-card-link"
+                href="../movies/collection.html?list=tamil"
+              >
+                <img
+                  class="language-artwork"
+                  src="../movies/posters/wp7374638.webp"
+                  alt=""
+                  width="860"
+                  height="1219"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+                <div class="language-copy">
+                  <span class="language-detail">Tamil</span>
+                  <h3 class="language-name">Kollywood</h3>
+                </div>
+              </a>
+            </li>
+            <li class="language-card language-card-malayalam">
+              <a
+                class="language-card-link"
+                href="../movies/collection.html?list=malayalam"
+              >
+                <img
+                  class="language-artwork"
+                  src="../movies/posters/wp6907956.webp"
+                  alt=""
+                  width="860"
+                  height="430"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+                <div class="language-copy">
+                  <span class="language-detail">Malayalam</span>
+                  <h3 class="language-name">Mollywood</h3>
+                </div>
+              </a>
+            </li>
+            <li class="language-card language-card-english">
+              <a
+                class="language-card-link"
+                href="../movies/collection.html?list=english"
+              >
+                <img
+                  class="language-artwork"
+                  src="../movies/posters/wp6908042.webp"
+                  alt=""
+                  width="860"
+                  height="405"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+                <div class="language-copy">
+                  <span class="language-detail">English</span>
+                  <h3 class="language-name">Hollywood</h3>
+                </div>
+              </a>
+            </li>
+            <li class="language-card language-card-more">
+              <a
+                class="movie-more-card"
+                href="../movies/collection.html?list=all"
+                aria-label="See movies in all languages"
+                ><span class="movie-more-icon" aria-hidden="true"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                ><span>More</span></a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section class="movie-section" aria-labelledby="favourite-movies-title">
+          <h2 class="movie-section-title" id="favourite-movies-title">
+            My Favourite Movies
+          </h2>
+          <p class="movie-section-note">
+            A few sample picks to start your collection.
+          </p>
+          <ul
+            class="movie-row"
+            aria-labelledby="favourite-movies-title"
+            tabindex="0"
+          >
+            <li class="movie-card">
+              <div class="movie-card-art movie-card-bommarillu">
+                <img
+                  src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                  alt=""
+                  width="424"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+              </div>
+              <h3 class="movie-card-title">Bommarillu</h3>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Bommarillu"
+              ></button>
+            </li>
+            <li class="movie-card">
+              <div class="movie-card-art movie-card-love-failure">
+                <img
+                  src="../movies/posters/wp6908042.webp"
+                  alt=""
+                  width="860"
+                  height="405"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+              </div>
+              <h3 class="movie-card-title">Love Failure</h3>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Love Failure"
+              ></button>
+            </li>
+            <li class="movie-card">
+              <div class="movie-card-art movie-card-ala-modalaindi">
+                <img
+                  src="../movies/posters/wp7374638.webp"
+                  alt=""
+                  width="860"
+                  height="1219"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+              </div>
+              <h3 class="movie-card-title">Ala Modalaindi</h3>
+              <button
+                class="movie-card-open"
+                type="button"
+                data-movie-details
+                aria-haspopup="dialog"
+                aria-label="View details for Ala Modalaindi"
+              ></button>
+            </li>
+            <li class="movie-card">
+              <a
+                class="movie-more-card"
+                href="../movies/collection.html?list=favourites"
+                aria-label="See all favourite movies"
+                ><span class="movie-more-icon" aria-hidden="true"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                ><span>More</span></a
+              >
+              <p class="movie-card-title movie-card-hint">View collection</p>
+            </li>
+          </ul>
+        </section>
+
+        <section class="movie-section" aria-labelledby="movie-genres-title">
+          <h2 class="movie-section-title" id="movie-genres-title">
+            Browse by genre
+          </h2>
+          <p class="movie-section-note">Something for every mood.</p>
+          <ul
+            class="genre-list"
+            aria-labelledby="movie-genres-title"
+            tabindex="0"
+          >
+            <li class="genre-card genre-romance">
+              <a href="../movies/collection.html?list=romance">Romance</a>
+            </li>
+            <li class="genre-card genre-drama">
+              <a href="../movies/collection.html?list=drama">Drama</a>
+            </li>
+            <li class="genre-card genre-comedy">
+              <a href="../movies/collection.html?list=comedy">Comedy</a>
+            </li>
+            <li class="genre-card genre-thriller">
+              <a href="../movies/collection.html?list=thriller">Thriller</a>
+            </li>
+            <li class="genre-card genre-action">
+              <a href="../movies/collection.html?list=action">Action</a>
+            </li>
+            <li class="genre-card genre-scifi">
+              <a href="../movies/collection.html?list=scifi">Sci-Fi</a>
+            </li>
+            <li class="genre-card genre-more">
+              <a
+                href="../movies/collection.html?list=all"
+                aria-label="See movies from all genres"
+                >More <span aria-hidden="true">→</span></a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section
+          class="movie-section"
+          aria-labelledby="movies-by-language-title"
+        >
+          <h2 class="movie-section-title" id="movies-by-language-title">
+            Movies by language
+          </h2>
+          <p class="movie-section-note">
+            Sample titles and artwork. Add your own picks and matching posters
+            later.
+          </p>
+          <section class="language-shelf" aria-labelledby="telugu-movies-title">
+            <div class="movie-shelf-heading">
+              <h3 id="telugu-movies-title">Telugu movies</h3>
+              <span class="movie-shelf-label">Tollywood</span>
+            </div>
+            <ul
+              class="movie-row"
+              aria-labelledby="telugu-movies-title"
+              tabindex="0"
+            >
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-bommarillu">
+                  <img
+                    src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                    alt=""
+                    width="424"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Bommarillu</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Bommarillu"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-love-failure">
+                  <img
+                    src="../movies/posters/wp6908042.webp"
+                    alt=""
+                    width="860"
+                    height="405"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Love Failure</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Love Failure"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-ala-modalaindi">
+                  <img
+                    src="../movies/posters/wp7374638.webp"
+                    alt=""
+                    width="860"
+                    height="1219"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Ala Modalaindi</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Ala Modalaindi"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <a
+                  class="movie-more-card"
+                  href="../movies/collection.html?list=telugu"
+                  aria-label="See all telugu movies"
+                  ><span class="movie-more-icon" aria-hidden="true"
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                  ><span>More</span></a
+                >
+                <p class="movie-card-title movie-card-hint">View collection</p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="language-shelf" aria-labelledby="hindi-movies-title">
+            <div class="movie-shelf-heading">
+              <h3 id="hindi-movies-title">Hindi movies</h3>
+              <span class="movie-shelf-label">Bollywood</span>
+            </div>
+            <ul
+              class="movie-row"
+              aria-labelledby="hindi-movies-title"
+              tabindex="0"
+            >
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-love-failure">
+                  <img
+                    src="../movies/posters/wp6908042.webp"
+                    alt=""
+                    width="860"
+                    height="405"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">3 Idiots</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for 3 Idiots"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-neerajanam">
+                  <img
+                    src="../movies/posters/wp6907956.webp"
+                    alt=""
+                    width="860"
+                    height="430"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Dangal</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Dangal"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-bommarillu">
+                  <img
+                    src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                    alt=""
+                    width="424"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Zindagi Na Milegi Dobara</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Zindagi Na Milegi Dobara"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <a
+                  class="movie-more-card"
+                  href="../movies/collection.html?list=hindi"
+                  aria-label="See all hindi movies"
+                  ><span class="movie-more-icon" aria-hidden="true"
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                  ><span>More</span></a
+                >
+                <p class="movie-card-title movie-card-hint">View collection</p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="language-shelf" aria-labelledby="tamil-movies-title">
+            <div class="movie-shelf-heading">
+              <h3 id="tamil-movies-title">Tamil movies</h3>
+              <span class="movie-shelf-label">Kollywood</span>
+            </div>
+            <ul
+              class="movie-row"
+              aria-labelledby="tamil-movies-title"
+              tabindex="0"
+            >
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-ala-modalaindi">
+                  <img
+                    src="../movies/posters/wp7374638.webp"
+                    alt=""
+                    width="860"
+                    height="1219"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">96</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for 96"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-bommarillu">
+                  <img
+                    src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                    alt=""
+                    width="424"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Vikram</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Vikram"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-neerajanam">
+                  <img
+                    src="../movies/posters/wp6907956.webp"
+                    alt=""
+                    width="860"
+                    height="430"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Kaithi</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Kaithi"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <a
+                  class="movie-more-card"
+                  href="../movies/collection.html?list=tamil"
+                  aria-label="See all tamil movies"
+                  ><span class="movie-more-icon" aria-hidden="true"
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                  ><span>More</span></a
+                >
+                <p class="movie-card-title movie-card-hint">View collection</p>
+              </li>
+            </ul>
+          </section>
+
+          <section
+            class="language-shelf"
+            aria-labelledby="malayalam-movies-title"
+          >
+            <div class="movie-shelf-heading">
+              <h3 id="malayalam-movies-title">Malayalam movies</h3>
+              <span class="movie-shelf-label">Mollywood</span>
+            </div>
+            <ul
+              class="movie-row"
+              aria-labelledby="malayalam-movies-title"
+              tabindex="0"
+            >
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-bommarillu">
+                  <img
+                    src="../movies/posters/709356baa588c022e0f30266d1fbd6c1.webp"
+                    alt=""
+                    width="424"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Premam</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Premam"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-ala-modalaindi">
+                  <img
+                    src="../movies/posters/wp7374638.webp"
+                    alt=""
+                    width="860"
+                    height="1219"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Bangalore Days</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Bangalore Days"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-love-failure">
+                  <img
+                    src="../movies/posters/wp6908042.webp"
+                    alt=""
+                    width="860"
+                    height="405"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Manjummel Boys</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Manjummel Boys"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <a
+                  class="movie-more-card"
+                  href="../movies/collection.html?list=malayalam"
+                  aria-label="See all malayalam movies"
+                  ><span class="movie-more-icon" aria-hidden="true"
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                  ><span>More</span></a
+                >
+                <p class="movie-card-title movie-card-hint">View collection</p>
+              </li>
+            </ul>
+          </section>
+
+          <section
+            class="language-shelf"
+            aria-labelledby="english-movies-title"
+          >
+            <div class="movie-shelf-heading">
+              <h3 id="english-movies-title">English movies</h3>
+              <span class="movie-shelf-label">Hollywood</span>
+            </div>
+            <ul
+              class="movie-row"
+              aria-labelledby="english-movies-title"
+              tabindex="0"
+            >
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-neerajanam">
+                  <img
+                    src="../movies/posters/wp6907956.webp"
+                    alt=""
+                    width="860"
+                    height="430"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Interstellar</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Interstellar"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-love-failure">
+                  <img
+                    src="../movies/posters/wp6908042.webp"
+                    alt=""
+                    width="860"
+                    height="405"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">Inception</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for Inception"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <div class="movie-card-art movie-card-ala-modalaindi">
+                  <img
+                    src="../movies/posters/wp7374638.webp"
+                    alt=""
+                    width="860"
+                    height="1219"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <h4 class="movie-card-title">The Dark Knight</h4>
+                <button
+                  class="movie-card-open"
+                  type="button"
+                  data-movie-details
+                  aria-haspopup="dialog"
+                  aria-label="View details for The Dark Knight"
+                ></button>
+              </li>
+              <li class="movie-card">
+                <a
+                  class="movie-more-card"
+                  href="../movies/collection.html?list=english"
+                  aria-label="See all english movies"
+                  ><span class="movie-more-icon" aria-hidden="true"
+                    ><svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-5-5 5 5-5 5" /></svg></span
+                  ><span>More</span></a
+                >
+                <p class="movie-card-title movie-card-hint">View collection</p>
+              </li>
+            </ul>
+          </section>
         </section>
       </div>
     </main>

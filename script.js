@@ -27,6 +27,7 @@ const tabs = [
 ];
 
 const navigation = document.querySelector(".bottom-nav");
+const isCollectionPage = document.body.hasAttribute("data-movie-collection");
 
 navigation.innerHTML = `<span class="nav-track" aria-hidden="true"><span class="nav-highlight"></span></span>${tabs
   .map(({ route, label, icon }) => {
@@ -76,9 +77,13 @@ function selectTab(route, committed = true) {
   });
 }
 
-pages.set(document.body.dataset.route, readPage(document));
+if (!isCollectionPage) {
+  pages.set(document.body.dataset.route, readPage(document));
+}
 selectTab(document.body.dataset.route);
-disposePageFeatures = mountMovieHero(document.querySelector(".page-content"));
+disposePageFeatures = mountPageFeatures(
+  document.querySelector(".page-content"),
+);
 
 function loadPage(link) {
   const route = link.dataset.route;
@@ -115,6 +120,7 @@ function stopContentMotion() {
 }
 
 function showContent(page, direction) {
+  document.dispatchEvent(new window.Event("movie-page-change"));
   const main = document.querySelector(".app-canvas");
   const current = main.querySelector(".page-content:not([aria-hidden])");
   const next = page.content.cloneNode(true);
@@ -129,7 +135,7 @@ function showContent(page, direction) {
 
   if (!animate) {
     main.replaceChildren(next);
-    disposePageFeatures = mountMovieHero(next);
+    disposePageFeatures = mountPageFeatures(next);
     return;
   }
 
@@ -137,7 +143,7 @@ function showContent(page, direction) {
   current.inert = true;
   leavingContent = current;
   main.append(next);
-  disposePageFeatures = mountMovieHero(next);
+  disposePageFeatures = mountPageFeatures(next);
 
   leavingAnimation = current.animate(
     [
@@ -221,6 +227,8 @@ async function navigate(link, updateHistory = true) {
 }
 
 navigation.addEventListener("click", (event) => {
+  // Collections are real documents, not the Movies tab's cached landing page.
+  if (isCollectionPage) return;
   const link = event.target.closest("a.nav-item");
 
   if (
@@ -240,6 +248,7 @@ navigation.addEventListener("click", (event) => {
 });
 
 window.addEventListener("popstate", () => {
+  if (isCollectionPage) return;
   const path = window.location.pathname.replace(/index\.html$/, "");
   const link = links.find(
     (item) => new window.URL(item.href).pathname === path,
@@ -249,6 +258,7 @@ window.addEventListener("popstate", () => {
 });
 
 function prefetch(link) {
+  if (isCollectionPage) return;
   const connection = window.navigator.connection;
   if (
     !link ||
@@ -294,11 +304,15 @@ window.addEventListener("pagehide", () => {
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     disposePageFeatures();
-    disposePageFeatures = mountMovieHero(
+    disposePageFeatures = mountPageFeatures(
       document.querySelector(".page-content:not([aria-hidden])"),
     );
   }
 });
+
+function mountPageFeatures(content) {
+  return mountMovieHero(content);
+}
 
 function mountMovieHero(content) {
   const hero = content?.querySelector(".movie-hero");
@@ -321,6 +335,8 @@ function mountMovieHero(content) {
   function updateSlides() {
     slides.forEach((slide, position) => {
       slide.setAttribute("aria-hidden", String(position !== index));
+      const trigger = slide.querySelector("[data-movie-details]");
+      if (trigger) trigger.tabIndex = position === index ? 0 : -1;
     });
   }
 
@@ -406,6 +422,11 @@ function mountMovieHero(content) {
   );
 
   hero.addEventListener("focusin", stopRotation, listenerOptions);
+  document.addEventListener(
+    "movie-details-open",
+    stopRotation,
+    listenerOptions,
+  );
   hero.addEventListener(
     "pointerenter",
     (event) => {

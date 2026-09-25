@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#101110" />
+    <meta
+      name="description"
+      content="Browse a sample movie collection in Jay's Library."
+    />
+    <title>Movie collection · Jay's Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../script.js" defer></script>
+    <script src="../movies/movie-details.mjs" type="module"></script>
+    <script src="./collection.mjs" type="module"></script>
+  </head>
+  <body data-route="movies" data-movie-collection>
+    <main class="app-canvas">
+      <div class="page-content" data-collection-page>
+        <a class="collection-back" href="../movies/">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 12H5m5-5-5 5 5 5" />
+          </svg>
+          Movies
+        </a>
+        <header class="collection-header">
+          <p class="collection-eyebrow" data-collection-label>
+            Your collection
+          </p>
+          <h1
+            class="page-title collection-title"
+            id="collection-title"
+            data-collection-title
+          >
+            Movie collection
+          </h1>
+          <p class="movie-section-note" data-collection-description>
+            Dummy titles and sample posters for now.
+          </p>
+        </header>
+        <ul
+          class="movie-collection-grid"
+          id="collection-movies"
+          data-collection-grid
+        ></ul>
+        <div class="collection-footer" data-collection-sentinel>
+          <p
+            class="collection-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            data-collection-status
+          >
+            Loading collection…
+          </p>
+          <button
+            class="collection-load-more"
+            type="button"
+            aria-controls="collection-movies"
+            data-load-more
+            hidden
+          >
+            Load more movies
+          </button>
+        </div>
+        <noscript
+          ><p class="movie-section-note">
+            Enable JavaScript to load the sample movies. You can still return to
+            Movies using the link above.
+          </p></noscript
+        >
+      </div>
+    </main>
+    <nav class="bottom-nav" aria-label="Main navigation"></nav>
+  </body>
+</html>

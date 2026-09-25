@@ -4,6 +4,7 @@
   background: #101110;
   font-synthesis: none;
   color-scheme: dark;
+  scrollbar-gutter: stable;
 
   --app-width: 440px;
   --nav-height: 68px;
@@ -186,6 +187,630 @@ body {
   outline-offset: -2px;
 }
 
+.movie-languages {
+  margin-top: 24px;
+}
+
+.movie-languages h2 {
+  margin: 0 0 12px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.language-list {
+  display: flex;
+  gap: 10px;
+  margin: 0 -20px;
+  padding: 2px 20px 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 20px;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.language-list::-webkit-scrollbar {
+  display: none;
+}
+
+.language-list:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+.language-card {
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 clamp(144px, 40vw, 164px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: #20231f;
+  border-radius: 6px;
+}
+
+.language-artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.language-card-telugu .language-artwork {
+  object-position: 50% 30%;
+}
+
+.language-card-hindi .language-artwork {
+  object-position: 12% 50%;
+}
+
+.language-card-tamil .language-artwork {
+  object-position: 50% 45%;
+}
+
+.language-card-malayalam .language-artwork {
+  object-position: 80% 50%;
+}
+
+.language-card-english .language-artwork {
+  object-position: 65% 50%;
+}
+
+.language-card:not(.language-card-more)::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 5%) 0%,
+    rgb(0 0 0 / 12%) 25%,
+    rgb(0 0 0 / 78%) 55%,
+    rgb(0 0 0 / 94%) 100%
+  );
+}
+
+.language-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 32px 12px 12px;
+}
+
+.language-name {
+  margin: 0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.language-detail {
+  color: #e2e5df;
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.language-card-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.movie-section {
+  margin-top: 32px;
+}
+
+.movie-section-title {
+  margin: 0;
+  color: #f2f4f2;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.movie-section-note {
+  margin: 4px 0 14px;
+  color: #a8aea9;
+  font-size: 0.6875rem;
+  line-height: 1.7;
+}
+
+.movie-row,
+.genre-list {
+  display: flex;
+  gap: 10px;
+  margin: 0 -20px;
+  padding: 2px 20px 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 20px;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.movie-row::-webkit-scrollbar,
+.genre-list::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-row:focus-visible,
+.genre-list:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+.movie-card {
+  position: relative;
+  min-width: 0;
+  flex: 0 0 clamp(104px, 30vw, 124px);
+  scroll-snap-align: start;
+}
+
+.movie-card-art {
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #20231f;
+  border-radius: 6px;
+  transition: transform 160ms var(--motion-ease);
+}
+
+.movie-card-open {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.movie-card:has(.movie-card-open:active) .movie-card-art {
+  transform: scale(0.985);
+}
+
+.movie-card-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.movie-card-bommarillu img {
+  object-position: 50% 30%;
+}
+
+.movie-card-love-failure img {
+  object-position: 22% 50%;
+}
+
+.movie-card-ala-modalaindi img {
+  object-position: 50% 45%;
+}
+
+.movie-card-neerajanam img {
+  object-position: 75% 50%;
+}
+
+.movie-card-title {
+  margin: 8px 0 0;
+  color: #e2e5df;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.movie-card-hint {
+  color: #a8aea9;
+  text-align: center;
+}
+
+.movie-more-card {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  color: #e1efd9;
+  font: inherit;
+  font-size: 0.875rem;
+  text-decoration: none;
+  background: linear-gradient(145deg, #202c1e, #151a15);
+  border: 1px solid #34462f;
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 160ms ease;
+}
+
+.movie-more-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: #b5df9f;
+  background: #293c23;
+  border-radius: 50%;
+}
+
+.movie-more-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.language-card-more .movie-more-card {
+  height: 100%;
+  aspect-ratio: auto;
+  gap: 8px;
+}
+
+.genre-card {
+  display: flex;
+  min-height: 68px;
+  flex: 0 0 112px;
+  align-items: stretch;
+  scroll-snap-align: start;
+  color: #f2f4f2;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: linear-gradient(125deg, var(--genre-tint), #191b19);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 6px;
+}
+
+.genre-card a {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.genre-romance {
+  --genre-tint: #54303c;
+}
+
+.genre-drama {
+  --genre-tint: #3a3c58;
+}
+
+.genre-comedy {
+  --genre-tint: #514526;
+}
+
+.genre-thriller {
+  --genre-tint: #253e43;
+}
+
+.genre-action {
+  --genre-tint: #4d3529;
+}
+
+.genre-scifi {
+  --genre-tint: #343153;
+}
+
+.genre-more {
+  --genre-tint: #2e4925;
+}
+
+.language-shelf {
+  margin-top: 24px;
+}
+
+.movie-shelf-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-bottom: 10px;
+}
+
+.movie-shelf-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.movie-shelf-label {
+  color: #a8aea9;
+  font-size: 0.625rem;
+  line-height: 1.5;
+}
+
+.collection-back {
+  display: flex;
+  width: fit-content;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #c6deb9;
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+.collection-back svg {
+  width: 20px;
+  height: 20px;
+}
+
+.collection-eyebrow {
+  margin: 0 0 10px;
+  color: #b5cfaa;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.collection-title {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+
+.movie-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 12px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.movie-card-details {
+  margin: 3px 0 0;
+  color: #a8aea9;
+  font-size: 0.625rem;
+  line-height: 1.5;
+}
+
+.collection-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 0 12px;
+}
+
+.collection-status {
+  margin: 0;
+  color: #a8aea9;
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.collection-load-more {
+  min-height: 44px;
+  padding: 10px 20px;
+  color: #e1efd9;
+  font: inherit;
+  font-size: 0.8125rem;
+  background: #23331d;
+  border: 1px solid #405b35;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.collection-load-more:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.movie-more-card:focus-visible,
+.movie-card-open:focus-visible,
+.language-card-link:focus-visible,
+.genre-card a:focus-visible,
+.collection-back:focus-visible,
+.collection-load-more:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: -3px;
+}
+
+.movie-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  color: #f2f4f2;
+  background: transparent;
+  border: 0;
+}
+
+.movie-drawer[open] {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.movie-drawer::backdrop {
+  background: transparent;
+}
+
+.movie-drawer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 64%);
+  touch-action: none;
+}
+
+.movie-drawer[open] .movie-drawer-scrim {
+  will-change: opacity;
+}
+
+.movie-drawer-panel {
+  position: relative;
+  display: flex;
+  width: min(100%, var(--app-width));
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - max(32px, env(safe-area-inset-top)));
+  flex-direction: column;
+  overflow: hidden;
+  background: #1b201b;
+  border: 1px solid #343d31;
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -12px 48px rgb(0 0 0 / 20%);
+}
+
+.movie-drawer[open] .movie-drawer-panel {
+  will-change: transform;
+}
+
+.movie-drawer-handle {
+  display: grid;
+  min-height: 48px;
+  flex: 0 0 48px;
+  place-items: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.movie-drawer-handle span {
+  width: 36px;
+  height: 4px;
+  background: #687362;
+  border-radius: 999px;
+}
+
+.movie-drawer-handle:active {
+  cursor: grabbing;
+}
+
+.movie-drawer-close {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  right: 10px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  color: #e1e9dc;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.movie-drawer-close svg {
+  width: 22px;
+  height: 22px;
+}
+
+.movie-drawer-close:focus-visible {
+  outline: 2px solid #9ad087;
+  outline-offset: -5px;
+}
+
+.movie-drawer-content {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.movie-drawer-art {
+  position: relative;
+  height: 210px;
+  height: clamp(150px, 28svh, 240px);
+  background: #252d22;
+}
+
+.movie-drawer-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-drawer-art::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 55%, #1b201b);
+}
+
+.movie-drawer-copy {
+  padding: 16px 24px calc(28px + env(safe-area-inset-bottom));
+}
+
+.movie-drawer-copy h2 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.movie-drawer-eyebrow {
+  margin: 0 0 24px;
+  color: #a9c397;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+}
+
+.movie-drawer-copy h3 {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.movie-drawer-story {
+  margin: 0;
+  color: #bcc6b6;
+  font-size: 0.8125rem;
+  line-height: 1.85;
+}
+
 .bottom-nav {
   --nav-padding-left: max(8px, env(safe-area-inset-left));
   --nav-padding-right: max(8px, env(safe-area-inset-right));
@@ -310,12 +935,18 @@ body {
 }
 
 @media (hover: hover) {
+  .movie-more-card:hover {
+    border-color: #7aa96a;
+  }
+
   .nav-item:not(.is-active):hover .nav-icon {
     color: #f2f4f2;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .movie-card-art,
+  .movie-more-card,
   .nav-highlight,
   .nav-icon,
   .nav-icon::before,
@@ -324,6 +955,10 @@ body {
   }
 
   .nav-item:active .nav-icon svg {
+    transform: none;
+  }
+
+  .movie-card:has(.movie-card-open:active) .movie-card-art {
     transform: none;
   }
 }
