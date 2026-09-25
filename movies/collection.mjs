@@ -11,9 +11,12 @@ export function mountCollectionPage(root, env) {
   const controller = new env.AbortController();
   let observer;
   let frame;
+  let entranceFrame;
   let disposed = false;
   // Preserve cards and the scroll position when restored from the back/forward cache.
   let rendered = grid.children.length;
+  const allowsMotion =
+    env.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches !== true;
 
   root.querySelector("[data-collection-title]").textContent = collection.title;
   root.querySelector("[data-collection-label]").textContent = collection.label;
@@ -23,9 +26,16 @@ export function mountCollectionPage(root, env) {
   doc.querySelector('meta[name="description"]').content =
     `Browse 40 dummy movies in ${collection.title}.`;
 
-  function createCard(movie) {
+  function setStage(value) {
+    root.dataset.collectionStage = value;
+  }
+
+  function createCard(movie, index, animated) {
     const card = doc.createElement("li");
     card.className = "movie-card";
+    if (animated) {
+      card.className += ` movie-card-reveal movie-card-stagger-${Math.min(index, 9)}`;
+    }
     card.dataset.movieId = movie.id;
     card.dataset.movieStory = movie.story;
     const artwork = doc.createElement("div");
@@ -67,10 +77,12 @@ export function mountCollectionPage(root, env) {
     if (finished) observer?.disconnect();
   }
 
-  function appendBatch(size) {
+  function appendBatch(size, animated = false) {
     const batch = collection.movies.slice(rendered, rendered + size);
     const fragment = doc.createDocumentFragment();
-    batch.forEach((movie) => fragment.append(createCard(movie)));
+    batch.forEach((movie, index) =>
+      fragment.append(createCard(movie, index, animated)),
+    );
     grid.append(fragment);
     rendered += batch.length;
     updateProgress();
@@ -87,7 +99,7 @@ export function mountCollectionPage(root, env) {
     frame = env.requestAnimationFrame(() => {
       frame = undefined;
       if (disposed) return;
-      appendBatch(10);
+      appendBatch(10, allowsMotion);
       if (restoreFocus) {
         const target =
           rendered >= collection.movies.length ? status : loadButton;
@@ -99,8 +111,19 @@ export function mountCollectionPage(root, env) {
   }
 
   loadButton.addEventListener("click", loadMore, { signal: controller.signal });
-  if (rendered === 0) appendBatch(20);
-  else updateProgress();
+  if (rendered === 0) {
+    setStage(allowsMotion ? "booting" : "ready");
+    appendBatch(20, allowsMotion);
+    if (allowsMotion) {
+      entranceFrame = env.requestAnimationFrame(() => {
+        entranceFrame = undefined;
+        if (!disposed) setStage("ready");
+      });
+    }
+  } else {
+    setStage("ready");
+    updateProgress();
+  }
 
   // Keep the explicit button usable without IntersectionObserver or with Data Saver.
   if (
@@ -122,6 +145,7 @@ export function mountCollectionPage(root, env) {
     controller.abort();
     observer?.disconnect();
     if (frame !== undefined) env.cancelAnimationFrame(frame);
+    if (entranceFrame !== undefined) env.cancelAnimationFrame(entranceFrame);
   };
 }
 

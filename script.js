@@ -47,6 +47,7 @@ let enteringAnimation;
 let leavingAnimation;
 let leavingContent;
 let disposePageFeatures = () => {};
+let initialRevealFrame;
 
 function readPage(source) {
   const content = source.querySelector(".page-content");
@@ -81,6 +82,7 @@ if (!isCollectionPage) {
   pages.set(document.body.dataset.route, readPage(document));
 }
 selectTab(document.body.dataset.route);
+mountInitialPageReveal(document.querySelector(".page-content"));
 disposePageFeatures = mountPageFeatures(
   document.querySelector(".page-content"),
 );
@@ -293,6 +295,10 @@ window.addEventListener("pagehide", () => {
   navigationVersion += 1;
   if (window.cancelIdleCallback) window.cancelIdleCallback(idlePreload);
   else window.clearTimeout(idlePreload);
+  if (initialRevealFrame !== undefined) {
+    window.cancelAnimationFrame(initialRevealFrame);
+    initialRevealFrame = undefined;
+  }
   requests.forEach(({ controller }) => controller.abort());
   requests.clear();
   disposePageFeatures();
@@ -312,6 +318,15 @@ window.addEventListener("pageshow", (event) => {
 
 function mountPageFeatures(content) {
   return mountMovieHero(content);
+}
+
+function mountInitialPageReveal(content) {
+  if (!content || isCollectionPage || reducedMotion.matches) return;
+  content.dataset.pageStage = "booting";
+  initialRevealFrame = window.requestAnimationFrame(() => {
+    initialRevealFrame = undefined;
+    content.dataset.pageStage = "ready";
+  });
 }
 
 function mountMovieHero(content) {

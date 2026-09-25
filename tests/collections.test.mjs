@@ -13,6 +13,7 @@ class Element extends globalThis.EventTarget {
     this.children = [];
     this.dataset = {};
     this.attributes = {};
+    this.style = {};
   }
   append(...nodes) {
     for (const node of nodes) {
@@ -63,6 +64,8 @@ function createEnvironment({
   elements["[data-load-more]"] = button;
   const root = {
     ownerDocument: doc,
+    dataset: {},
+    attributes: {},
     querySelector: (selector) => elements[selector],
   };
   const frames = new Map();
@@ -166,6 +169,7 @@ test("every collection starts with twenty lazy-loading cards", () => {
   for (const key of Object.keys(collections)) {
     const context = createEnvironment({ key });
     const dispose = mountCollectionPage(context.root, context.env);
+    assert.equal(context.root.dataset.collectionStage, "booting");
     assert.equal(context.grid.children.length, 20);
     assert.equal(context.status.textContent, "20 of 40 movies");
     assert.equal(
@@ -183,7 +187,10 @@ test("every collection starts with twenty lazy-loading cards", () => {
       assert.equal(trigger.type, "button");
       assert.equal(trigger.attributes["aria-haspopup"], "dialog");
       assert.ok(card.dataset.movieStory.length > 200);
+      assert.match(card.className, /movie-card-reveal/);
     }
+    context.flush();
+    assert.equal(context.root.dataset.collectionStage, "ready");
     dispose();
   }
 });
@@ -191,6 +198,7 @@ test("every collection starts with twenty lazy-loading cards", () => {
 test("near-end loading adds ten, deduplicates triggers and stops at forty", () => {
   const context = createEnvironment();
   const dispose = mountCollectionPage(context.root, context.env);
+  context.flush();
   const observer = context.observers[0];
   observer.notify(false);
   assert.equal(context.frames.size, 0);
@@ -223,6 +231,7 @@ test("manual fallback works without an observer and with Data Saver enabled", ()
   for (const options of [{ observer: false }, { saveData: true }]) {
     const context = createEnvironment(options);
     const dispose = mountCollectionPage(context.root, context.env);
+    context.flush();
     assert.equal(context.observers.length, 0);
     assert.equal(context.button.hidden, false);
     context.button.focus();
@@ -242,6 +251,7 @@ test("manual fallback works without an observer and with Data Saver enabled", ()
 test("leaving cancels work and back/forward restoration preserves loaded cards", () => {
   const context = createEnvironment();
   let dispose = mountCollectionPage(context.root, context.env);
+  context.flush();
   context.click();
   context.flush();
   assert.equal(context.grid.children.length, 30);
@@ -253,6 +263,7 @@ test("leaving cancels work and back/forward restoration preserves loaded cards",
   assert.equal(context.frames.size, 0);
   assert.equal(context.grid.children.length, 30);
   dispose = mountCollectionPage(context.root, context.env);
+  assert.equal(context.root.dataset.collectionStage, "ready");
   assert.equal(context.grid.children.length, 30);
   assert.equal(context.grid.attributes["aria-busy"], "false");
   context.click();
@@ -260,6 +271,7 @@ test("leaving cancels work and back/forward restoration preserves loaded cards",
   assert.equal(context.grid.children.length, 40);
   dispose();
   dispose = mountCollectionPage(context.root, context.env);
+  assert.equal(context.root.dataset.collectionStage, "ready");
   assert.equal(context.grid.children.length, 40);
   assert.equal(context.button.hidden, true);
   dispose();
@@ -354,6 +366,29 @@ test("native Back on collection pages does not reload a restored document", () =
     },
   });
   assert.doesNotThrow(() => callback());
+});
+
+test("initial page loads animate the main page while collection documents keep their own staging", () => {
+  const source = readFileSync(
+    new globalThis.URL("../script.js", import.meta.url),
+    "utf8",
+  );
+  const css = readFileSync(
+    new globalThis.URL("../style.css", import.meta.url),
+    "utf8",
+  );
+  assert.match(
+    source,
+    /mountInitialPageReveal\(document\.querySelector\("\.page-content"\)\)/,
+  );
+  assert.match(
+    source,
+    /if \(!content \|\| isCollectionPage \|\| reducedMotion\.matches\) return;/,
+  );
+  assert.match(source, /content\.dataset\.pageStage = "booting"/);
+  assert.match(source, /content\.dataset\.pageStage = "ready"/);
+  assert.match(css, /\.page-content\[data-page-stage="booting"\] > \*/);
+  assert.match(css, /@keyframes page-content-in/);
 });
 
 test("collection assets resolve inside the existing Pages deployment directories", () => {
